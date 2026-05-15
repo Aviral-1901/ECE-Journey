@@ -34,6 +34,7 @@ assert(count == 4'b0010)
     else $fatal(1, "increment fail");
 $display("increment pass");
 
+//hold check
 enable=0;
 tick(1);
 assert(count == 4'b0010) 
