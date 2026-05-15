@@ -13,6 +13,7 @@ counter_4bit counter_uut (
     .count(count)
 );
 
+//function like C
 task tick(input int n);
 begin
     repeat(n) @(posedge clk);
@@ -39,12 +40,14 @@ assert(count == 4'b0010)
     else $fatal(1, "hold fail");
 $display("hold pass");
 
+//reset
 rst_n=0;
 tick(1);
 assert(count == 4'b0000) 
     else $fatal(1, "reset fail");
 $display("reset pass");
 
+//wraparound
 rst_n=1; enable=1;
 tick(16);
 assert(count == 4'b0000) 
