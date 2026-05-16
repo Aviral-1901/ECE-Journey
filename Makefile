@@ -24,3 +24,83 @@ test_majority:
 	$(VVP) $(SIM)/gates/majority_sim
 
 test_gates: test_and test_or test_xor test_majority
+
+test_mux2to1:
+	$(IVERILOG) $(FLAGS) -o $(SIM)/combinational/mux_2to1_sim $(RTL)/combinational/mux_2to1_ternary.v $(TB)/combinational/mux_2to1_tb.v
+	$(VVP) $(SIM)/combinational/mux_2to1_sim
+
+test_mux4to1:
+	$(IVERILOG) $(FLAGS) -o $(SIM)/combinational/mux_4to1_sim $(RTL)/combinational/mux_4to1.v $(TB)/combinational/mux_4to1_tb.v
+	$(VVP) $(SIM)/combinational/mux_4to1_sim
+
+test_decoder2to4:
+	$(IVERILOG) $(FLAGS) -o $(SIM)/combinational/decoder_2to4_sim $(RTL)/combinational/decoder_2to4.v $(TB)/combinational/decoder_2to4_tb.v
+	$(VVP) $(SIM)/combinational/decoder_2to4_sim
+
+test_combinational: test_mux2to1 test_mux4to1 test_decoder2to4
+
+
+test_half_adder:
+	$(IVERILOG) $(FLAGS) -o $(SIM)/arithmetic/half_adder_sim $(RTL)/arithmetic/half_adder.v $(TB)/arithmetic/half_adder_tb.v
+	$(VVP) $(SIM)/arithmetic/half_adder_sim
+
+test_full_adder:
+	$(IVERILOG) $(FLAGS) -o $(SIM)/arithmetic/full_adder_sim \
+		$(RTL)/arithmetic/half_adder.v \
+		$(RTL)/arithmetic/full_adder.v \
+		$(TB)/arithmetic/full_adder_tb.v
+	$(VVP) $(SIM)/arithmetic/full_adder_sim
+
+test_ripple_carry_adder:
+	$(IVERILOG) $(FLAGS) -o $(SIM)/arithmetic/ripple_carry_adder_sim \
+		$(RTL)/arithmetic/half_adder.v \
+		$(RTL)/arithmetic/full_adder.v \
+		$(RTL)/arithmetic/ripple_carry_adder.v \
+		$(TB)/arithmetic/ripple_carry_adder_tb.v
+	$(VVP) $(SIM)/arithmetic/ripple_carry_adder_sim
+
+test_adder_subtractor:
+	$(IVERILOG) $(FLAGS) -o $(SIM)/arithmetic/adder_subtractor_sim \
+		$(RTL)/arithmetic/half_adder.v \
+		$(RTL)/arithmetic/full_adder.v \
+		$(RTL)/arithmetic/adder_subtractor.v \
+		$(TB)/arithmetic/adder_subtractor_tb.v
+	$(VVP) $(SIM)/arithmetic/adder_subtractor_sim
+
+test_arithmetic: test_half_adder test_full_adder test_ripple_carry_adder test_adder_subtractor
+
+
+test_sr_latch:
+	$(IVERILOG) $(FLAGS) -o $(SIM)/sequential/sr_latch_sim $(RTL)/sequential/sr_latch.sv $(TB)/sequential/sr_latch_tb.sv
+	$(VVP) $(SIM)/sequential/sr_latch_sim
+
+test_d_latch:
+	$(IVERILOG) $(FLAGS) -o $(SIM)/sequential/d_latch_sim $(RTL)/sequential/d_latch.sv $(TB)/sequential/d_latch_tb.sv
+	$(VVP) $(SIM)/sequential/d_latch_sim
+
+test_d_flipflop:
+	$(IVERILOG) $(FLAGS) -o $(SIM)/sequential/d_flipflop_sim $(RTL)/sequential/d_flipflop.sv $(TB)/sequential/d_flipflop_tb.sv
+	$(VVP) $(SIM)/sequential/d_flipflop_sim
+
+test_register_4bit:
+	$(IVERILOG) $(FLAGS) -o $(SIM)/sequential/register_4bit_sim $(RTL)/sequential/register_4bit.sv $(TB)/sequential/register_4bit_tb.sv
+	$(VVP) $(SIM)/sequential/register_4bit_sim
+
+test_counter_4bit:
+	$(IVERILOG) $(FLAGS) -o $(SIM)/sequential/counter_4bit_sim $(RTL)/sequential/counter_4bit.sv $(TB)/sequential/counter_4bit_tb_clkedge.sv
+	$(VVP) $(SIM)/sequential/counter_4bit_sim
+
+test_sequential: test_sr_latch test_d_latch test_d_flipflop test_register_4bit test_counter_4bit
+
+
+test: test_gates test_combinational test_arithmetic test_sequential
+
+clean:
+	rm -rf $(SIM)/gates/*
+	rm -rf $(SIM)/combinational/*
+	rm -rf $(SIM)/arithmetic/*
+	rm -rf $(SIM)/sequential/*
+
+wave:
+	$(VVP) $(SIM)/sequential/$(MOD)_sim
+	gtkwave $(SIM)/sequential/$(MOD).vcd
