@@ -1,0 +1,9 @@
+# Simulation compiled outputs
+*_sim
+
+# Waveform dumps
+*.vcd
+
+# Keep sim directory structure but ignore contents
+sim/**/*
+!sim/**/.gitkeep
