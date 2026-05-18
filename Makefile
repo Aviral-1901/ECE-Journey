@@ -7,7 +7,8 @@ SIM = sim
 
 FLAGS = -g2012
 
-$(shell mkdir -p sim/gates sim/combinational sim/arithmetic sim/sequential)
+setup:
+	mkdir -p sim/gates sim/combinational sim/arithmetic sim/sequential
 
 test_and:
 	$(IVERILOG) $(FLAGS) -o $(SIM)/gates/and_sim $(RTL)/gates/and_gate.v $(TB)/gates/and_gate_tb.v
@@ -95,7 +96,7 @@ test_counter_4bit:
 test_sequential: test_sr_latch test_d_latch test_d_flipflop test_register_4bit test_counter_4bit
 
 
-test: test_gates test_combinational test_arithmetic test_sequential
+test: setup test_gates test_combinational test_arithmetic test_sequential
 
 clean:
 	rm -rf $(SIM)/gates/*
