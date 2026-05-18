@@ -14,10 +14,9 @@ jobs:
       
     - name: Install iverilog
       run: sudo apt-get install -y iverilog
+
+    - name: Create simulation directories
+      run: make setup
       
     - name: Run all tests
-      run: |
-        ls -la sim/
-        ls -la sim/gates/
-        make test
-      
+      run: make test
