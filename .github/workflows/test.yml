@@ -17,6 +17,13 @@ jobs:
 
     - name: Create simulation directories
       run: mkdir -p sim/gates sim/combinational sim/arithmetic sim/sequential
+
+    - name: Debug directories
+      run: |
+        pwd
+        ls -la
+        ls -la sim/
+        ls -la sim/gates/
       
     - name: Run all tests
       run: make test
