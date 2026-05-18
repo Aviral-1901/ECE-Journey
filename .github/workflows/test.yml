@@ -16,7 +16,7 @@ jobs:
       run: sudo apt-get install -y iverilog
 
     - name: Create simulation directories
-      run: make setup
+      run: mkdir -p sim/gates sim/combinational sim/arithmetic sim/sequential
       
     - name: Run all tests
       run: make test
