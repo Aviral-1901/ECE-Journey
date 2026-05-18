@@ -18,12 +18,12 @@ jobs:
     - name: Create simulation directories
       run: mkdir -p sim/gates sim/combinational sim/arithmetic sim/sequential
 
-    - name: Debug directories
+    - name: Test iverilog directly
       run: |
-        pwd
-        ls -la
-        ls -la sim/
+        mkdir -p sim/gates
         ls -la sim/gates/
-      
+        iverilog -g2012 -o sim/gates/and_sim rtl/gates/and_gate.v tb/gates/and_gate_tb.v
+        ls -la sim/gates/
+
     - name: Run all tests
       run: make test
