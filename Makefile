@@ -70,7 +70,15 @@ test_adder_subtractor:
 		$(TB)/arithmetic/adder_subtractor_tb.v
 	$(VVP) $(SIM)/arithmetic/adder_subtractor_sim
 
-test_arithmetic: test_half_adder test_full_adder test_ripple_carry_adder test_adder_subtractor
+test_adder_subtractor_sv:
+	$(IVERILOG) $(FLAGS) -o $(SIM)/arithmetic/adder_subtractor_sv_sim \
+		$(RTL)/arithmetic/half_adder.v \
+		$(RTL)/arithmetic/full_adder.v \
+		$(RTL)/arithmetic/adder_subtractor.sv \
+		$(TB)/arithmetic/adder_subtractor_tb.sv
+	$(VVP) $(SIM)/arithmetic/adder_subtractor_sv_sim
+
+test_arithmetic: test_half_adder test_full_adder test_ripple_carry_adder test_adder_subtractor test_adder_subtractor_sv
 
 
 test_sr_latch:
