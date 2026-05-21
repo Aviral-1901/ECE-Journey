@@ -8,7 +8,7 @@ SIM = sim
 FLAGS = -g2012
 
 setup:
-	mkdir -p sim/gates sim/combinational sim/arithmetic sim/sequential
+	mkdir -p sim/gates sim/combinational sim/arithmetic sim/sequential sim/fsm
 
 test_and:
 	$(IVERILOG) $(FLAGS) -o $(SIM)/gates/and_sim $(RTL)/gates/and_gate.v $(TB)/gates/and_gate_tb.v
@@ -103,14 +103,22 @@ test_counter_4bit:
 
 test_sequential: test_sr_latch test_d_latch test_d_flipflop test_register_4bit test_counter_4bit
 
+test_traffic_light:
+	$(IVERILOG) $(FLAGS) -o $(SIM)/fsm/traffic_light_sim \
+		$(RTL)/fsm/traffic_light.sv \
+		$(TB)/fsm/traffic_light_tb.sv
+	$(VVP) $(SIM)/fsm/traffic_light_sim
 
-test: setup test_gates test_combinational test_arithmetic test_sequential
+test_fsm: test_traffic_light
+
+test: setup test_gates test_combinational test_arithmetic test_sequential test_fsm
 
 clean:
 	rm -rf $(SIM)/gates/*
 	rm -rf $(SIM)/combinational/*
 	rm -rf $(SIM)/arithmetic/*
 	rm -rf $(SIM)/sequential/*
+	rm -rf $(SIM)/fsm/*
 
 wave:
 	$(VVP) $(SIM)/sequential/$(MOD)_sim
