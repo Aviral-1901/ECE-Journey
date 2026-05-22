@@ -109,7 +109,13 @@ test_traffic_light:
 		$(TB)/fsm/traffic_light_tb.sv
 	$(VVP) $(SIM)/fsm/traffic_light_sim
 
-test_fsm: test_traffic_light
+test_seq_detector:
+	$(IVERILOG) $(FLAGS) -o $(SIM)/fsm/seq_detector_sim \
+		$(RTL)/fsm/sequence_detector.sv \
+		$(TB)/fsm/sequence_detector_tb.sv
+	$(VVP) $(SIM)/fsm/seq_detector_sim
+
+test_fsm: test_traffic_light test_seq_detector
 
 test: setup test_gates test_combinational test_arithmetic test_sequential test_fsm
 
