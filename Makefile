@@ -115,7 +115,14 @@ test_seq_detector:
 		$(TB)/fsm/sequence_detector_tb.sv
 	$(VVP) $(SIM)/fsm/seq_detector_sim
 
-test_fsm: test_traffic_light test_seq_detector
+
+test_vending_machine:
+	$(IVERILOG) $(FLAGS) -o $(SIM)/fsm/vending_machine_sim \
+		$(RTL)/fsm/vending_machine.sv \
+		$(TB)/fsm/vending_machine_tb.sv
+	$(VVP) $(SIM)/fsm/vending_machine_sim
+
+test_fsm: test_traffic_light test_seq_detector test_vending_machine
 
 test: setup test_gates test_combinational test_arithmetic test_sequential test_fsm
 
