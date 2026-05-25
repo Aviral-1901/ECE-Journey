@@ -45,6 +45,8 @@ end
 endtask
 
 initial begin
+$dumpfile("vending_machine.vcd");
+$dumpvars(0, vending_machine_tb);
 $monitor("time=%0t clk=%b rst_n=%b coin5=%b coin10=%b dispense=%b change=%b",$time,clk,rst_n,coin5,coin10,dispense,change);
 rst_n=0; coin5=0; coin10=0; tick(2);
 
