@@ -124,7 +124,16 @@ test_vending_machine:
 
 test_fsm: test_traffic_light test_seq_detector test_vending_machine
 
-test: setup test_gates test_combinational test_arithmetic test_sequential test_fsm
+
+test_register_file:
+	$(IVERILOG) $(FLAGS) -o $(SIM)/memory/register_file_sim \
+		$(RTL)/memory/register_file.sv \
+		$(TB)/memory/register_file_tb.sv
+	$(VVP) $(SIM)/memory/register_file_sim
+
+test_memory: test_register_file
+
+test: setup test_gates test_combinational test_arithmetic test_sequential test_fsm test_memory
 
 clean:
 	rm -rf $(SIM)/gates/*
@@ -132,6 +141,7 @@ clean:
 	rm -rf $(SIM)/arithmetic/*
 	rm -rf $(SIM)/sequential/*
 	rm -rf $(SIM)/fsm/*
+	rm -rf $(SIM)/memory/*
 
 wave:
 	$(VVP) $(SIM)/sequential/$(MOD)_sim
