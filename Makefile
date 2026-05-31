@@ -131,7 +131,14 @@ test_register_file:
 		$(TB)/memory/register_file_tb.sv
 	$(VVP) $(SIM)/memory/register_file_sim
 
-test_memory: test_register_file
+test_sync_ram:
+	$(IVERILOG) $(FLAGS) -o $(SIM)/memory/sync_ram_sim \
+		$(RTL)/memory/sync_ram.sv \
+		$(TB)/memory/sync_ram_tb.sv
+	$(VVP) $(SIM)/memory/sync_ram_sim
+
+
+test_memory: test_register_file test_sync_ram
 
 test: setup test_gates test_combinational test_arithmetic test_sequential test_fsm test_memory
 
