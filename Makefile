@@ -140,7 +140,14 @@ test_sync_ram:
 
 test_memory: test_register_file test_sync_ram
 
-test: setup test_gates test_combinational test_arithmetic test_sequential test_fsm test_memory
+
+test_alu:
+	$(IVERILOG) $(FLAGS) -o $(SIM)/cpu/alu_sim \
+		$(RTL)/cpu/alu.sv \
+		$(TB)/cpu/alu_tb.sv
+	$(VVP) $(SIM)/cpu/alu_sim
+
+test: setup test_gates test_combinational test_arithmetic test_sequential test_fsm test_memory test_alu
 
 clean:
 	rm -rf $(SIM)/gates/*
@@ -149,6 +156,7 @@ clean:
 	rm -rf $(SIM)/sequential/*
 	rm -rf $(SIM)/fsm/*
 	rm -rf $(SIM)/memory/*
+	rm -rf $(SIM)/cpu/*
 
 wave:
 	$(VVP) $(SIM)/sequential/$(MOD)_sim
