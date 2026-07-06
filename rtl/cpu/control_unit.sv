@@ -10,12 +10,16 @@ module control_unit(
     output logic [3:0] alu_op
 );
 
+logic [3:0] rtype_selector;
+assign rtype_selector = {funct7[6], funct3};
+
+
 always_comb begin
     RegWrite=0; MemWrite=0; ALUSrc=0; MemToReg=0; branch=0; alu_op=4'b0000;
     case (opcode)
         7'b0110011: begin //r-type
             RegWrite=1; MemWrite=0; ALUSrc=0; MemToReg=0; branch=0;
-            case({funct7[6], funct3})  
+            case(rtype_selector)  
                 4'b0000: alu_op = 4'b0000; // ADD
                 4'b1000: alu_op = 4'b0001; // SUB
                 4'b0111: alu_op = 4'b0010; // AND
@@ -26,6 +30,21 @@ always_comb begin
                 4'b0010: alu_op = 4'b0111; // SLT
             endcase
         end
+
+        7'b0010011: begin // I-type ALU (addi, etc)
+            RegWrite=1; MemWrite=0; ALUSrc=1; MemToReg=0; branch=0;
+            case(funct3)
+                3'b000: alu_op = 4'b0000; // ADDI
+                3'b111: alu_op = 4'b0010; // ANDI
+                3'b110: alu_op = 4'b0011; // ORI
+                3'b100: alu_op = 4'b0100; // XORI
+                3'b001: alu_op = 4'b0101; // SLLI
+                3'b101: alu_op = 4'b0110; // SRLI
+                3'b010: alu_op = 4'b0111; // SLTI
+                default: alu_op = 4'b0000;
+            endcase
+        end
+
 
         7'b0000011: begin //lw
             RegWrite=1; MemWrite=0; ALUSrc=1; MemToReg=1; branch=0; alu_op=4'b0000;
