@@ -30,7 +30,7 @@ assign funct7 = instruction[31:25];
 assign instruction = imem[pc[9:2]];
 
 initial begin
-    $readmemh("program.hex", imem);
+    $readmemh("tb/cpu/program.hex", imem);
 end
 
 always_ff @(posedge clk or negedge rst_n) begin 
