@@ -78,7 +78,7 @@ alu alu_instantion(
     .zero(zero_flag)
 );
 
-sync_ram #(.DEPTH(256), .WIDTH(32)) ram(
+data_mem #(.DEPTH(256), .WIDTH(32)) ram(
     .clk(clk),
     .write_enable(MemWrite),
     .address(alu_result[9:2]),
