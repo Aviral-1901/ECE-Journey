@@ -147,7 +147,21 @@ test_alu:
 		$(TB)/cpu/alu_tb.sv
 	$(VVP) $(SIM)/cpu/alu_sim
 
-test: setup test_gates test_combinational test_arithmetic test_sequential test_fsm test_memory test_alu
+
+test_cpu_integration:
+	$(IVERILOG) $(FLAGS) -o $(SIM)/cpu/cpu_sim \
+		$(RTL)/cpu/cpu.sv \
+		$(RTL)/cpu/control_unit.sv \
+		$(RTL)/cpu/imm_gen.sv \
+		$(RTL)/cpu/alu.sv \
+		$(RTL)/memory/register_file.sv \
+		$(RTL)/memory/sync_ram.sv \
+		$(TB)/cpu/cpu_tb.sv
+	$(VVP) $(SIM)/cpu/cpu_sim
+
+test_cpu: test_alu test_cpu_integration
+
+test: setup test_gates test_combinational test_arithmetic test_sequential test_fsm test_memory test_cpu
 
 clean:
 	rm -rf $(SIM)/gates/*
