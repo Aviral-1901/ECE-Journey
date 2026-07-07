@@ -155,7 +155,7 @@ test_cpu_integration:
 		$(RTL)/cpu/imm_gen.sv \
 		$(RTL)/cpu/alu.sv \
 		$(RTL)/memory/register_file.sv \
-		$(RTL)/memory/sync_ram.sv \
+		$(RTL)/memory/data_mem.sv \
 		$(TB)/cpu/cpu_tb.sv
 	$(VVP) $(SIM)/cpu/cpu_sim
 
