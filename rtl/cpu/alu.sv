@@ -19,6 +19,8 @@ always_comb begin
         4'b0101: result = a << shift_amt;
         4'b0110: result = a >> shift_amt;
         4'b0111: result = $signed(a) < $signed(b);
+        4'b1000: result = $signed(a) >>> shift_amt; //sra = shift right arithmetic
+        4'b1001: result = a < b; //sltu
 
         default: result = 32'b0;
     
