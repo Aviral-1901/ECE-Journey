@@ -1,0 +1,17 @@
+## What we built in Phase 1
+We built a single-cycle CPU in Phase 1. We started with basic gates (AND, OR, XOR), adders (half_adder, full_adder, ripple_carry_adder, adder_subtractor), sequential circuits (flipflops, counter), FSM (sequence_detectors, Traffic_Light, Vending_machine), and memory (registers and ram). Then we built control_unit.sv, imm_gen.sv for immediate value generation and finally a working single-cycle CPU (cpu.sv). We started with Verilog, then switched to SystemVerilog and have been writing testbenches for all the modules we have made.
+
+## What was hardest
+I didn't find any single topic to be overwhelmingly hard; everything required conceptual understanding, and once those concepts clicked, things were not that difficult to grasp. One thing I might struggle with now is remembering the exact ports required for modules from scratch, although it seems manageable. The modules made in the later phase like the control unit, immediate generator and wiring the full CPU were among the harder things I encountered. I also struggled with determining what the inputs for the various MUXes should be and it was kind of frustrating to figure those out at first. For example figuring out why BEQ has ALUSrc=0 even though it has an immediate value took some time. It took time to realize that the ALU is busy doing subtraction to compare the registers so the immediate value has to bypass the ALU and go directly to the dedicated PC-adder. Knowing why we made sync_ram with synchronous reads with forwarding felt somewhat confusing at first but we ultimately used data_mem.sv with combinational reads to make our single-cycle CPU work.
+
+
+## What I'd do differently
+I didn't initially know how to approach learning this architecture, so I just followed the roadmap and went with the flow. My revision strategy wasn't optimal, and I think adding a small conceptual question at the end of the day from previous days/weeks would keep the concepts fresh without consuming much time along with a well-planned revision at the end of the week. I also wish I had added more about the deeper connections to real hardware constraints (like the critical path and clock frequency) and how textbook concepts translate to actual physical implementation tradeoffs.
+
+
+## What surprised me
+Many things were surprising across the journey. The first surprise was regarding the register_file: the fact that we can only read from two registers at a time, and we can't just read or write to an arbitrary number of registers at once. The fact that maximum clock frequency is strictly decided by the hardware's critical path was also surprising. Finally, learning that real RAMs do not use MUX trees (like the ones in the register file) to select addresses, but instead use a physical 2D matrix structure to get the correct location, was a major realization.
+
+
+## Where I feel genuinely strong vs where gaps remain
+I feel very good about the concepts covered so far. I might struggle with knowing the exact bit positions for different instructions without looking them up. CMOS Transistor-level design needs more depth for me. Some concepts like byte/halfword memory access (lb, lh, sb, sh) are still not covered, and J-type instructions are not covered in much detail yet. SRA/SLTU are not implemented in our ALU. Finally, JAL/JALR are not implemented so the CPU cannot support function calls yet.
