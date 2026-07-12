@@ -28,6 +28,8 @@ always_comb begin
                 4'b0001: alu_op = 4'b0101; // SLL
                 4'b0101: alu_op = 4'b0110; // SRL
                 4'b0010: alu_op = 4'b0111; // SLT
+                4'b1101: alu_op = 4'b1000; // SRA
+                4'b0011: alu_op = 4'b1001; // SLTU
             endcase
         end
 
