@@ -114,6 +114,26 @@ assert (result==32'h0F) else $fatal(1, "Fail: XOR operation with 0 failed");
 $display("XOR with 0 Pass: a=%h b=%h result=%h",a,b,result);
 #1;
 
+a=32'hFFFFFFFF; b=32'd1; alu_op=4'b1000; #1;
+assert (result==32'hFFFFFFFF) else $fatal(1, "Fail: SRA operation failed");
+$display("SRA Pass: a=%h b=%h result=%h",a,b,result);
+#1;
+
+a=32'hFFFFFFFF; b=32'd1; alu_op=4'b0110; #1;
+assert (result==32'h7FFFFFFF) else $fatal(1, "Fail: SRL operation failed");
+$display("SRL Pass: a=%h b=%h result=%h",a,b,result);
+#1;
+
+a=32'hFFFFFFFF; b=32'h00000001; alu_op=4'b1001; #1;
+assert (result==0) else $fatal(1, "Fail: For unsigned FFFFFFFF is greater than 1");
+$display("SLTU Pass: a=%h b=%h result=%h",a,b,result);
+#1;
+
+a=32'hFFFFFFFF; b=32'h00000001; alu_op=4'b0111; #1;
+assert (result==1) else $fatal(1, "Fail: For signed FFFFFFFF is less than 1");
+$display("SLT Pass: a=%h b=%h result=%h",a,b,result);
+#1;
+
 $finish;
 end
 endmodule
