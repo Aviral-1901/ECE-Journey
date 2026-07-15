@@ -81,7 +81,8 @@ alu alu_instantion(
 data_mem #(.DEPTH(256), .WIDTH(32)) ram(
     .clk(clk),
     .write_enable(MemWrite),
-    .address(alu_result[9:2]),
+    .address(alu_result),
+    .funct3(funct3),
     .write_data(read_data2),
     .read_data(ram_read_data)
 );
