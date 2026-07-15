@@ -137,8 +137,14 @@ test_sync_ram:
 		$(TB)/memory/sync_ram_tb.sv
 	$(VVP) $(SIM)/memory/sync_ram_sim
 
+test_data_mem:
+	$(IVERILOG) $(FLAGS) -o $(SIM)/memory/data_mem_sim \
+		$(RTL)/memory/data_mem.sv \
+		$(TB)/memory/data_mem_tb.sv
+	$(VVP) $(SIM)/memory/data_mem_sim
 
-test_memory: test_register_file test_sync_ram
+
+test_memory: test_register_file test_sync_ram test_data_mem
 
 
 test_alu:
