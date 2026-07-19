@@ -9,7 +9,8 @@ logic [6:0] opcode;
 logic [4:0] rs1, rs2, rd;
 logic [31:0] imm;
 logic zero_flag;
-logic RegWrite, MemWrite, ALUSrc, MemToReg, branch;
+logic RegWrite, MemWrite, ALUSrc, branch;
+logic [1:0] MemToReg;
 logic [31:0] read_data1, read_data2;
 logic [31:0] alu_result;
 logic [31:0] ram_read_data;
@@ -18,6 +19,9 @@ logic [31:0] imem [0:255]; //for simulating the instruction memory
 logic [2:0] funct3;
 logic [6:0] funct7;
 logic [3:0] alu_op;
+logic jump;
+logic jalr;
+logic [31:0] pc_plus4;
 
 
 assign rs1 = instruction[19:15];
@@ -26,6 +30,7 @@ assign rd  = instruction[11:7];
 assign opcode = instruction[6:0];
 assign funct3 = instruction[14:12];
 assign funct7 = instruction[31:25];
+assign pc_plus4 = pc + 4;
 
 assign instruction = imem[pc[9:2]];
 
@@ -51,7 +56,9 @@ control_unit cu(
     .MemToReg(MemToReg),
     .ALUSrc(ALUSrc),
     .branch(branch),
-    .alu_op(alu_op)
+    .alu_op(alu_op),
+    .jump(jump),
+    .jalr(jalr)
 );
 
 imm_gen gen(
@@ -91,9 +98,13 @@ data_mem #(.DEPTH(256), .WIDTH(32)) ram(
 assign ALUSrc_muxout = ALUSrc ? imm : read_data2;
 
 // MemToReg mux
-assign MemToReg_muxout = MemToReg ? ram_read_data : alu_result;
+assign MemToReg_muxout = (MemToReg == 2'b00) ? alu_result :
+                         (MemToReg == 2'b01) ? ram_read_data :
+                                               pc_plus4;      
 
 // pcsel mux
-assign PC_muxout = (branch & zero_flag) ? pc+imm : pc+4;
+assign PC_muxout = (jalr == 1) ?                      alu_result :
+                   (jump == 1|| (branch & zero_flag)) ? pc + imm :
+                                                         pc_plus4;
 
 endmodule
