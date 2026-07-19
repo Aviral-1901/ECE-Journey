@@ -19,7 +19,7 @@ endtask
 initial begin
 rst_n=0; tick(2);
 
-rst_n=1; tick(8);
+rst_n=1; tick(7);
 
 assert (dut.reg_file.registers[1]==32'd5) else $fatal(1, "Fail: x1 should have value 5");
 $display("Pass: x1 has value 5");
@@ -35,6 +35,16 @@ $display("Pass: x4 has value 10");
 
 assert (dut.reg_file.registers[5]==32'd10) else $fatal(1, "Fail: x5 should have value 10");
 $display("Pass: x5 has value 10");
+
+tick(5);
+assert (dut.reg_file.registers[2]==32'd15) else $fatal(1, "Fail: x2 should have value 15");
+$display("Pass: x2 has value 15 after running in the function");
+
+assert (dut.reg_file.registers[3]==32'd99) else $fatal(1, "Fail: x3 should have value 99");
+$display("Pass: x3 has value 99 and ran after returning from the function");
+
+assert (dut.reg_file.registers[1]==32'd40) else $fatal(1, "Fail: x1 should have value 40");
+$display("Pass: x1 has return address 40");
 
 
 $finish;
