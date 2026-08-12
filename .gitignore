@@ -4,6 +4,9 @@
 # Waveform dumps
 *.vcd
 
+# cocotb outputs
+results.xml
+
 # Keep sim directory structure but ignore contents
 sim/**/*
 !sim/**/.gitkeep
