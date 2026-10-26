@@ -23,6 +23,10 @@ async def test_alu_op(dut, a, b, alu_op, expected_result):
     actual_result = int(dut.result.value)
     assert actual_result == expected_result, f"FAIL: expected = {expected_result} and actual = {actual_result}"
 
+    expected_zero = 1 if expected_result == 0 else 0
+    actual_zero_flag = int(dut.zero.value)
+    assert actual_zero_flag == expected_zero , f"FAIL : expected= {expected_zero}, actual={actual_zero_flag}, a = {a}, b = {b}, alu_op = {alu_op}"
+
 @cocotb.test()
 async def test_alu_sub_multiple(dut):
     alu_op = 0b0001
