@@ -1,5 +1,6 @@
 import cocotb
 from cocotb.triggers import Timer
+import random
 
 @cocotb.test()
 async def test_alu_sub(dut):
@@ -115,3 +116,93 @@ async def test_alu_sltu(dut):
 
     expected_result = 1 if a < b else 0
     await test_alu_op(dut,a,b,alu_op,expected_result)
+
+######## RANDOMIZED TESTS ###########
+def random_pair():
+    a = random.randint(0, 2**32-1)
+    roll = random.randint(1, 10)
+    b = a if roll == 1 else random.randint(0, 2**32-1)
+    return (a, b)
+
+@cocotb.test()
+async def test_alu_sub_random(dut):
+    alu_op = 0b0001
+    for _ in range(100):
+        a, b = random_pair()
+        expected_result = (a - b) % (2**32) 
+        await test_alu_op(dut,a,b,alu_op,expected_result)
+
+@cocotb.test()
+async def test_alu_sra_random(dut):
+    alu_op = 0b1000
+    for _ in range(100):
+        a, b = random_pair()
+        a_signed = a - 2**32 if a >= 2**31 else a
+        expected_result = (a_signed >> (b%32)) % (2**32)
+        await test_alu_op(dut,a,b,alu_op,expected_result)
+
+@cocotb.test()
+async def test_alu_add_random(dut):
+    alu_op = 0b0000
+    for _ in range(100):
+        a, b = random_pair()
+        expected_result = (a + b) % (2**32)
+        await test_alu_op(dut,a,b,alu_op,expected_result)
+
+@cocotb.test()
+async def test_alu_and_random(dut):
+    alu_op = 0b0010
+    for _ in range(100):
+        a, b = random_pair()
+        expected_result = a & b
+        await test_alu_op(dut,a,b,alu_op,expected_result)
+
+@cocotb.test()
+async def test_alu_or_random(dut):
+    alu_op = 0b0011
+    for _ in range(100):
+        a, b = random_pair()
+        expected_result = a | b
+        await test_alu_op(dut,a,b,alu_op,expected_result)
+
+@cocotb.test()
+async def test_alu_xor_random(dut):
+    alu_op = 0b0100
+    for _ in range(100):
+        a, b = random_pair()
+        expected_result = a ^ b
+        await test_alu_op(dut,a,b,alu_op,expected_result)
+
+@cocotb.test()
+async def test_alu_sll_random(dut):
+    alu_op = 0b0101
+    for i in range(100):
+        a, b = random_pair()
+        expected_result =  (a << (b % 32)) % (2**32)
+        await test_alu_op(dut,a,b,alu_op,expected_result)
+
+@cocotb.test()
+async def test_alu_srl_random(dut):
+    alu_op = 0b0110
+    for i in range(100):
+        a, b = random_pair()
+        expected_result = (a >> (b % 32))
+        await test_alu_op(dut,a,b,alu_op,expected_result) 
+
+@cocotb.test()
+async def test_alu_slt_random(dut):
+    alu_op = 0b0111
+    for i in range(100):
+        a, b = random_pair()
+        a_signed = a - 2**32 if a >= 2**31 else a
+        b_signed = b - 2**32 if b >= 2**31 else b
+        expected_result = 1 if a_signed < b_signed else 0
+        await test_alu_op(dut,a,b,alu_op,expected_result)   
+
+@cocotb.test()
+async def test_alu_sltu_random(dut):
+    alu_op = 0b1001
+    for i in range(100):
+        a, b = random_pair()
+        expected_result = 1 if a < b else 0
+        await test_alu_op(dut,a,b,alu_op,expected_result)   
