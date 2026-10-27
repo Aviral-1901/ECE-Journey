@@ -4,6 +4,12 @@
 # Waveform dumps
 *.vcd
 
+# cocotb outputs
+results.xml
+
+__pycache__
+sim_build
+
 # Keep sim directory structure but ignore contents
 sim/**/*
 !sim/**/.gitkeep
