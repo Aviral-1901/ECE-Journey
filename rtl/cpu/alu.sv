@@ -41,4 +41,10 @@ always_comb begin
     end
 end
 
+always_comb begin
+    if (alu_op == 4'b0111) begin
+        assert (result == 0 || result == 1) else $fatal(1, "FAIL: SLT result can only be 0 or 1, a=%0d,b=%0d,result=%0d",a,b,result);
+    end
+end
+
 endmodule
