@@ -28,4 +28,10 @@ always_comb begin
 end
 
 assign zero = (result == 32'b0);
+
+always_comb begin
+    if (alu_op == 4'b0001 && a == b) begin
+        assert (zero == 1) else $fatal(1, "FAIL: a=%0d b=%0d",a,b);
+    end
+end
 endmodule
