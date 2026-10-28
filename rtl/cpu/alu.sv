@@ -34,4 +34,11 @@ always_comb begin
         assert (zero == 1) else $fatal(1, "FAIL: a=%0d b=%0d",a,b);
     end
 end
+
+always_comb begin
+    if (alu_op == 4'b0000 && a == 0) begin
+        assert (result == b) else $fatal(1, "FAIL: For ADD if a=0 result should be b, a=%0d,b=%0d,result=%0d",a,b,result);
+    end
+end
+
 endmodule
