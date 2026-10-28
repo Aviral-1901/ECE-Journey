@@ -46,6 +46,9 @@ async def test_alu_sub_multiple(dut):
 async def test_alu_add(dut):
     alu_op = 0b0000
 
+    expected_result = (0+5) % (2**32)
+    await test_alu_op(dut,0,5,alu_op,expected_result)
+
     expected_result = (10+3) % (2**32)
     await test_alu_op(dut,10,3,alu_op,expected_result)
 
