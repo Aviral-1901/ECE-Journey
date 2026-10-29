@@ -22,7 +22,7 @@ async def test_alu_op(dut, a, b, alu_op, expected_result):
     dut.alu_op.value = alu_op
     await Timer(1, units="ns")
     actual_result = int(dut.result.value)
-    assert actual_result == expected_result, f"FAIL: expected = {expected_result} and actual = {actual_result}"
+    assert actual_result == expected_result, f"FAIL: expected = {expected_result} and actual = {actual_result} : a={a}, b={b}, alu_op={alu_op}"
 
     expected_zero = 1 if expected_result == 0 else 0
     actual_zero_flag = int(dut.zero.value)
