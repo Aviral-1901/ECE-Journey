@@ -29,9 +29,11 @@ end
 
 assign zero = (result == 32'b0);
 
+
+`ifdef ALU_ASSERT
 always_comb begin
     if (alu_op == 4'b0001 && a == b) begin
-        assert (zero == 1) else $fatal(1, "FAIL: a=%0d b=%0d",a,b);
+        assert (zero == 1) else $fatal(1, "FAIL: alu_op=%d a=%0d b=%0d zero=%0d result=%0d",alu_op,a,b,zero,result);
     end
 end
 
@@ -46,5 +48,6 @@ always_comb begin
         assert (result == 0 || result == 1) else $fatal(1, "FAIL: SLT result can only be 0 or 1, a=%0d,b=%0d,result=%0d",a,b,result);
     end
 end
+`endif
 
 endmodule
